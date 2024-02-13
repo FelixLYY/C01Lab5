@@ -37,6 +37,6 @@ jobs:
     - run: npm i
      
     - name: Start server
-      run: node server.js
+      run: node server.js & 
 
     - run: npm test
