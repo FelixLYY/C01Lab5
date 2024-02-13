@@ -150,8 +150,35 @@ test("/patchNote - Patch with content and title", async () => {
 });
   
 test("/patchNote - Patch with just title", async () => {
-  // Code here
-  expect(false).toBe(true);
+  // Post 1 note
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "Post2",
+      content: "Postcontent2",
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+
+  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${postNoteBody.insertedId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "Patch2",
+      content: "",
+    }),
+  });
+
+  const patchNoteBody = await patchNoteRes.json();
+
+  expect(patchNoteRes.status).toBe(200);
+  expect(patchNoteBody.response).toBe("Document with ID " + postNoteBody.insertedId + " patched.");
 });
   
 test("/patchNote - Patch with just content", async () => {
