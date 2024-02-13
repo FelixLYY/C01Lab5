@@ -147,6 +147,14 @@ test("/patchNote - Patch with content and title", async () => {
 
   expect(patchNoteRes.status).toBe(200);
   expect(patchNoteBody.response).toBe("Document with ID " + postNoteBody.insertedId + " patched.");
+
+  // Delete all added note
+  await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 });
   
 test("/patchNote - Patch with just title", async () => {
@@ -179,11 +187,54 @@ test("/patchNote - Patch with just title", async () => {
 
   expect(patchNoteRes.status).toBe(200);
   expect(patchNoteBody.response).toBe("Document with ID " + postNoteBody.insertedId + " patched.");
+
+  // Delete all added note
+  await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 });
   
 test("/patchNote - Patch with just content", async () => {
-  // Code here
-  expect(false).toBe(true);
+  // Post 1 note
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "Post3",
+      content: "Postcontent3",
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+
+  const patchNoteRes = await fetch(`${SERVER_URL}/patchNote/${postNoteBody.insertedId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "",
+      content: "Patchcontent3",
+    }),
+  });
+
+  const patchNoteBody = await patchNoteRes.json();
+
+  expect(patchNoteRes.status).toBe(200);
+  expect(patchNoteBody.response).toBe("Document with ID " + postNoteBody.insertedId + " patched.");
+
+  // Delete all added note
+  await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 });
   
 test("/deleteAllNotes - Delete one note", async () => {
