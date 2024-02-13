@@ -239,7 +239,7 @@ test("/patchNote - Patch with just content", async () => {
   
 test("/deleteAllNotes - Delete one note", async () => {
   // Post 1 note
-  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+  await fetch(`${SERVER_URL}/postNote`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -265,8 +265,53 @@ test("/deleteAllNotes - Delete one note", async () => {
 });
   
 test("/deleteAllNotes - Delete three notes", async () => {
-  // Code here
-  expect(false).toBe(true);
+  // Post 3 note
+  await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "Post1",
+      content: "Postcontent1",
+    }),
+  });
+
+  await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "Post2",
+      content: "Postcontent2",
+    }),
+  });
+
+  await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "Post3",
+      content: "Postcontent3",
+    }),
+  });
+
+
+  // Delete all note, i.e. 3 note
+  const deleteAllNotesRes = await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+  const deleteAllNotesBody = await deleteAllNotesRes.json();
+
+  expect(deleteAllNotesRes.status).toBe(200);
+  expect(deleteAllNotesBody.response).toBe("3 note(s) deleted.");
 });
   
 test("/updateNoteColor - Update color of a note to red (#FF0000)", async () => {
