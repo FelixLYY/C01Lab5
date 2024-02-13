@@ -89,8 +89,32 @@ test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
 });
   
 test("/deleteNote - Delete a note", async () => {
-  // Code here
-  expect(false).toBe(true);
+  // Post 1 note
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "delete1",
+      content: "deletecontent1",
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+
+  // Delete note
+  const deleteNoteRes = await fetch(`${SERVER_URL}/deleteNote/${postNoteBody.insertedId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  
+  const deleteNoteBody = await deleteNoteRes.json();
+
+  expect(deleteNoteRes.status).toBe(200);
+  expect(deleteNoteBody.response).toBe("Document with ID " + postNoteBody.insertedId + " deleted.");
 });
   
 test("/patchNote - Patch with content and title", async () => {
