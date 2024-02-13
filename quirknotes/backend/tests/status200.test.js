@@ -315,6 +315,40 @@ test("/deleteAllNotes - Delete three notes", async () => {
 });
   
 test("/updateNoteColor - Update color of a note to red (#FF0000)", async () => {
-  // Code here
-  expect(false).toBe(true);
+  // Post 3 note
+  const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "Post1",
+      content: "Postcontent1",
+    }),
+  });
+
+  const postNoteBody = await postNoteRes.json();
+
+  const updateNoteColorRes = await fetch(`${SERVER_URL}/updateNoteColor/${postNoteBody.insertedId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      color: `#FF000000`,
+    })
+  });
+
+  const updateNoteColorBody = await updateNoteColorRes.json();
+
+  expect(updateNoteColorRes.status).toBe(200);
+  expect(updateNoteColorBody.message).toBe("Note color updated successfully.");
+
+  // Delete all added note
+  await fetch(`${SERVER_URL}/deleteAllNotes`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 });
