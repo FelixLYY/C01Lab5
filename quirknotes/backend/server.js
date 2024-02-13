@@ -170,7 +170,7 @@ app.patch('/updateNoteColor/:noteId', express.json(), async (req, res) => {
   try {
       const collection = db.collection('notes');
       await collection.updateOne({ _id: new ObjectId(noteId) }, { $set: { color } });
-      res.json({ message: 'Note color updated successfully.' });
+      res.json({ response: 'Note color updated successfully.' });
   } catch (error) {
       res.status(500).json({ error: error.message });
   }

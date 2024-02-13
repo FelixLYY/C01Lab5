@@ -342,7 +342,7 @@ test("/updateNoteColor - Update color of a note to red (#FF0000)", async () => {
   const updateNoteColorBody = await updateNoteColorRes.json();
 
   expect(updateNoteColorRes.status).toBe(200);
-  expect(updateNoteColorBody.message).toBe("Note color updated successfully.");
+  expect(updateNoteColorBody.response).toBe("Note color updated successfully.");
 
   // Delete all added note
   await fetch(`${SERVER_URL}/deleteAllNotes`, {
